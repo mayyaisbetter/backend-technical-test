@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "plugin:adonis/typescriptApp",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "adonis",
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": "warn"
+  }
+}
