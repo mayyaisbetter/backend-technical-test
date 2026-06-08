@@ -6,6 +6,7 @@
  */
 
 import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
+export type { DatabaseContract }
 
 declare module '@ioc:Adonis/Lucid/Database' {
   interface DatabaseContract {

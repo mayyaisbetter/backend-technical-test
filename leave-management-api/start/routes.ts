@@ -1,23 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/auth.ts
-| ├── start/routes/leaves.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/auth'
-| import './routes/leaves'
-|
-*/
-
 import Route from '@ioc:Adonis/Core/Route'
 
 /*
@@ -35,14 +15,35 @@ Route.get('/health', async ({ response }) => {
 
 /*
 |--------------------------------------------------------------------------
-| API v1
+| API v1 Route Group
 |--------------------------------------------------------------------------
 */
 Route.group(() => {
-  Route.get('/', async () => {
-    return {
-      message: 'Leave Management API v1',
-      version: '1.0.0',
-    }
-  })
+  // Public Auth Routes
+  Route.post('/auth/register', 'AuthController.register')
+  Route.post('/auth/login', 'AuthController.login')
+
+  // Authenticated Route Group
+  Route.group(() => {
+    // Current User Profile
+    Route.get('/users/me', 'AuthController.me')
+
+    // General Leave Request List & Details
+    Route.get('/leaves', 'LeaveController.index')
+    Route.get('/leaves/:id', 'LeaveController.show')
+
+    // Employee Specific Endpoints (Only 'employee' role can apply/cancel cuti)
+    Route.group(() => {
+      Route.post('/leaves', 'LeaveController.create')
+      Route.patch('/leaves/:id/cancel', 'LeaveController.cancel')
+    }).middleware('role:employee')
+
+    // Admin Specific Endpoints (Only 'admin' role can approve/reject cuti)
+    Route.group(() => {
+      Route.patch('/leaves/:id/approve', 'ApprovalController.approve')
+      Route.patch('/leaves/:id/reject', 'ApprovalController.reject')
+    }).middleware('role:admin')
+
+  }).middleware('jwtAuth')
+
 }).prefix('/api/v1')
