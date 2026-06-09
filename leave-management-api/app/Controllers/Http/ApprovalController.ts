@@ -6,7 +6,13 @@ export default class ApprovalController {
   private leaveService = new LeaveService()
 
   public async approve(ctx: HttpContextContract) {
-    const id = ctx.params.id
+    const id = parseInt(ctx.params.id, 10)
+    if (isNaN(id)) {
+      return ctx.response.badRequest({
+        success: false,
+        message: 'Invalid ID format',
+      })
+    }
     const leave = await this.leaveService.approveLeaveRequest(ctx.user!.id, id)
 
     return ctx.response.ok({
@@ -17,7 +23,13 @@ export default class ApprovalController {
   }
 
   public async reject(ctx: HttpContextContract) {
-    const id = ctx.params.id
+    const id = parseInt(ctx.params.id, 10)
+    if (isNaN(id)) {
+      return ctx.response.badRequest({
+        success: false,
+        message: 'Invalid ID format',
+      })
+    }
     const payload = await ctx.request.validate(RejectLeaveValidator)
     const leave = await this.leaveService.rejectLeaveRequest(
       ctx.user!.id,

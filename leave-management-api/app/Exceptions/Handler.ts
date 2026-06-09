@@ -1,6 +1,7 @@
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   constructor () {
@@ -26,18 +27,26 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     }
 
     const status = error.status || 500
-    const message = error.message || 'Internal server error'
+    const isProd = Env.get('NODE_ENV') === 'production'
+    const isServerError = status >= 500
+
+    let message = error.message || 'Internal server error'
+    if (isProd && isServerError) {
+      message = 'Internal server error'
+    } else {
+      message = message.replace(/^E_[A-Z_]+:\s*/, '') // Remove code prefix if present
+    }
 
     // Only log actual system/internal server errors (>= 500)
-    if (status >= 500) {
+    if (isServerError) {
       Logger.error(error)
     }
 
     // Return standardized response
     return ctx.response.status(status).send({
       success: false,
-      message: message.replace(/^E_[A-Z_]+:\s*/, ''), // Remove code prefix if present
-      code: error.code || 'E_INTERNAL_SERVER_ERROR',
+      message,
+      code: isProd && isServerError ? 'E_INTERNAL_SERVER_ERROR' : (error.code || 'E_INTERNAL_SERVER_ERROR'),
     })
   }
 }

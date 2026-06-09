@@ -20,8 +20,8 @@ Route.get('/health', async ({ response }) => {
 */
 Route.group(() => {
   // Public Auth Routes
-  Route.post('/auth/register', 'AuthController.register')
-  Route.post('/auth/login', 'AuthController.login')
+  Route.post('/auth/register', 'AuthController.register').middleware('rateLimit')
+  Route.post('/auth/login', 'AuthController.login').middleware('rateLimit')
 
   // Authenticated Route Group
   Route.group(() => {

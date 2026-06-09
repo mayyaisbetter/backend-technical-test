@@ -2,10 +2,13 @@ import { UserRepository } from 'App/Repositories/Contracts/UserRepository'
 import User from 'App/Models/User'
 
 export default class LucidUserRepository implements UserRepository {
-  public async findById(id: number, trx?: any): Promise<User | null> {
+  public async findById(id: number, trx?: any, lock?: boolean): Promise<User | null> {
     const query = User.query()
     if (trx) {
       query.useTransaction(trx)
+    }
+    if (lock) {
+      query.forUpdate()
     }
     return await query.where('id', id).first()
   }

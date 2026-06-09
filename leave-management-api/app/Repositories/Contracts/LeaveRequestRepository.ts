@@ -2,7 +2,7 @@ import LeaveRequest from 'App/Models/LeaveRequest'
 import { LeaveStatus } from 'App/Enums/LeaveStatus'
 
 export interface LeaveRequestRepository {
-  findById(id: number, trx?: any): Promise<LeaveRequest | null>
+  findById(id: number, trx?: any, lock?: boolean): Promise<LeaveRequest | null>
   findAllByUserId(userId: number): Promise<LeaveRequest[]>
   findAllByUserIdPaginated(userId: number, page: number, limit: number): Promise<any>
   findAll(): Promise<LeaveRequest[]>

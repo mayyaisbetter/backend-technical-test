@@ -33,7 +33,7 @@ export default class AuthService {
       throw new Exception('Invalid email or password', 400, 'E_INVALID_CREDENTIALS')
     }
 
-    const secret = Env.get('APP_KEY')
+    const secret = Env.get('JWT_SECRET')
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       secret,

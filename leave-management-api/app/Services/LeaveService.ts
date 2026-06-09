@@ -125,7 +125,8 @@ export default class LeaveService {
     const trx = await Database.transaction()
 
     try {
-      const leave = await this.leaveRequestRepository.findById(id, trx)
+      // Fetch leave request and lock it to prevent double approval race condition
+      const leave = await this.leaveRequestRepository.findById(id, trx, true)
       if (!leave) {
         throw new Exception('Leave request not found', 404, 'E_LEAVE_NOT_FOUND')
       }
@@ -139,8 +140,8 @@ export default class LeaveService {
         throw new Exception('You cannot approve your own leave request', 400, 'E_SELF_APPROVAL_NOT_ALLOWED')
       }
 
-      // Fetch employee user using transaction and row lock to prevent race conditions
-      const employee = await this.userRepository.findById(leave.userId, trx)
+      // Fetch employee user using transaction and row lock to prevent balance deduction race conditions
+      const employee = await this.userRepository.findById(leave.userId, trx, true)
       if (!employee) {
         throw new Exception('Employee user not found', 404, 'E_EMPLOYEE_NOT_FOUND')
       }

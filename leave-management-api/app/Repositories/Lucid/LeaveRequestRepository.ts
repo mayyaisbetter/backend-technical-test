@@ -3,10 +3,13 @@ import LeaveRequest from 'App/Models/LeaveRequest'
 import { LeaveStatus } from 'App/Enums/LeaveStatus'
 
 export default class LucidLeaveRequestRepository implements LeaveRequestRepository {
-  public async findById(id: number, trx?: any): Promise<LeaveRequest | null> {
+  public async findById(id: number, trx?: any, lock?: boolean): Promise<LeaveRequest | null> {
     const query = LeaveRequest.query()
     if (trx) {
       query.useTransaction(trx)
+    }
+    if (lock) {
+      query.forUpdate()
     }
     return await query.where('id', id).preload('user').preload('approver').first()
   }

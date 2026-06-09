@@ -17,8 +17,16 @@ export default class LeaveController {
   }
 
   public async index(ctx: HttpContextContract) {
-    const page = ctx.request.input('page', 1)
-    const limit = ctx.request.input('limit', 10)
+    const page = parseInt(ctx.request.input('page', '1'), 10)
+    const limit = parseInt(ctx.request.input('limit', '10'), 10)
+
+    if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
+      return ctx.response.badRequest({
+        success: false,
+        message: 'Invalid pagination parameters. Page and limit must be greater than 0.',
+      })
+    }
+
     const leaves = await this.leaveService.listLeaves(ctx.user!, page, limit)
     
     const serialized = leaves.toJSON()
@@ -32,7 +40,13 @@ export default class LeaveController {
   }
 
   public async show(ctx: HttpContextContract) {
-    const id = ctx.params.id
+    const id = parseInt(ctx.params.id, 10)
+    if (isNaN(id)) {
+      return ctx.response.badRequest({
+        success: false,
+        message: 'Invalid ID format',
+      })
+    }
     const leave = await this.leaveService.getLeaveById(ctx.user!, id)
 
     return ctx.response.ok({
@@ -43,7 +57,13 @@ export default class LeaveController {
   }
 
   public async cancel(ctx: HttpContextContract) {
-    const id = ctx.params.id
+    const id = parseInt(ctx.params.id, 10)
+    if (isNaN(id)) {
+      return ctx.response.badRequest({
+        success: false,
+        message: 'Invalid ID format',
+      })
+    }
     const leave = await this.leaveService.cancelLeaveRequest(ctx.user!, id)
 
     return ctx.response.ok({

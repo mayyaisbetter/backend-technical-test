@@ -14,25 +14,28 @@ export default class JwtAuth {
     }
 
     const token = authHeader.substring(7)
+    let dbUser: User | null = null
+
     try {
-      const secret = Env.get('APP_KEY')
+      const secret = Env.get('JWT_SECRET')
       const decoded = jwt.verify(token, secret) as { id: number; email: string }
       
-      const dbUser = await User.find(decoded.id)
-      if (!dbUser) {
-        return ctx.response.unauthorized({
-          success: false,
-          message: 'Unauthorized: User not found',
-        })
-      }
-
-      ctx.user = dbUser
-      await next()
+      dbUser = await User.find(decoded.id)
     } catch (error) {
       return ctx.response.unauthorized({
         success: false,
         message: 'Unauthorized: Invalid or expired token',
       })
     }
+
+    if (!dbUser) {
+      return ctx.response.unauthorized({
+        success: false,
+        message: 'Unauthorized: User not found',
+      })
+    }
+
+    ctx.user = dbUser
+    await next()
   }
 }
