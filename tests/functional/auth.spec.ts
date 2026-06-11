@@ -4,11 +4,11 @@ import Database from '@ioc:Adonis/Lucid/Database'
 test.group('Auth Functional Tests', (group) => {
   group.each.setup(async () => {
     // Truncate tables and restart IDs to isolate tests
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
   group.teardown(async () => {
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
   test('register employee successfully', async ({ client }) => {
@@ -71,11 +71,18 @@ test.group('Auth Functional Tests', (group) => {
       success: true,
       message: 'Login successful',
     })
-    
+
     const body = response.body()
     if (!body.data.token) {
       throw new Error('Token is missing in login response')
     }
+
+    const auditLog = await Database.from('audit_logs').where('action', 'LOGIN').first()
+    if (!auditLog) {
+      throw new Error('Expected LOGIN audit log to be created')
+    }
+
+    response.assertStatus(200)
   })
 
   test('fail to login with incorrect credentials', async ({ client }) => {

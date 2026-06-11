@@ -1,4 +1,4 @@
-import User from 'App/Models/User'
+import type User from 'App/Models/User'
 
 declare module '@ioc:Adonis/Core/HttpContext' {
   interface HttpContextContract {

@@ -4,7 +4,7 @@ import Env from '@ioc:Adonis/Core/Env'
 import User from 'App/Models/User'
 
 export default class JwtAuth {
-  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+  public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
     const authHeader = ctx.request.header('Authorization')
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return ctx.response.unauthorized({
@@ -19,7 +19,7 @@ export default class JwtAuth {
     try {
       const secret = Env.get('JWT_SECRET')
       const decoded = jwt.verify(token, secret) as { id: number; email: string }
-      
+
       dbUser = await User.find(decoded.id)
     } catch (error) {
       return ctx.response.unauthorized({

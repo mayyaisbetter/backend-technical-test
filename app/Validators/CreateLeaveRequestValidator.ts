@@ -2,7 +2,7 @@ import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class CreateLeaveRequestValidator {
-  constructor(protected ctx: HttpContextContract) {}
+  constructor (protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
     start_date: schema.date({ format: 'yyyy-MM-dd' }),

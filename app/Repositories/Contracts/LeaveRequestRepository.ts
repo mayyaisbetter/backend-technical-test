@@ -1,19 +1,32 @@
 import LeaveRequest from 'App/Models/LeaveRequest'
 import { LeaveStatus } from 'App/Enums/LeaveStatus'
+import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
+import { ModelPaginatorContract } from '@ioc:Adonis/Lucid/Orm'
 
-export interface LeaveRequestRepository {
-  findById(id: number, trx?: any, lock?: boolean): Promise<LeaveRequest | null>
-  findAllByUserId(userId: number): Promise<LeaveRequest[]>
-  findAllByUserIdPaginated(userId: number, page: number, limit: number): Promise<any>
-  findAll(): Promise<LeaveRequest[]>
-  findAllPaginated(page: number, limit: number): Promise<any>
-  findOverlapping(userId: number, startDate: any, endDate: any): Promise<LeaveRequest | null>
-  create(data: any): Promise<LeaveRequest>
-  updateStatus(
+export abstract class LeaveRequestRepository {
+  public abstract findById (id: number, trx?: TransactionClientContract, lock?: boolean): Promise<LeaveRequest | null>
+  public abstract findAllByUserId (userId: number): Promise<LeaveRequest[]>
+  public abstract findAllByUserIdPaginated (
+    userId: number,
+    page: number,
+    limit: number
+  ): Promise<ModelPaginatorContract<LeaveRequest>>
+  public abstract findAll (): Promise<LeaveRequest[]>
+  public abstract findAllPaginated (
+    page: number,
+    limit: number
+  ): Promise<ModelPaginatorContract<LeaveRequest>>
+  public abstract findOverlapping (
+    userId: number,
+    startDate: string,
+    endDate: string
+  ): Promise<LeaveRequest | null>
+  public abstract create (data: Partial<LeaveRequest>): Promise<LeaveRequest>
+  public abstract updateStatus (
     leaveRequest: LeaveRequest,
     status: LeaveStatus,
     approvedBy?: number | null,
     rejectionReason?: string | null,
-    trx?: any
+    trx?: TransactionClientContract
   ): Promise<LeaveRequest>
 }

@@ -1,12 +1,14 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { inject } from '@adonisjs/fold'
 import AuthService from 'App/Services/AuthService'
 import RegisterValidator from 'App/Validators/RegisterValidator'
 import LoginValidator from 'App/Validators/LoginValidator'
 
+@inject()
 export default class AuthController {
-  private authService = new AuthService()
+  constructor (private authService: AuthService) {}
 
-  public async register(ctx: HttpContextContract) {
+  public async register (ctx: HttpContextContract) {
     const payload = await ctx.request.validate(RegisterValidator)
     const user = await this.authService.register(payload)
 
@@ -17,9 +19,11 @@ export default class AuthController {
     })
   }
 
-  public async login(ctx: HttpContextContract) {
+  public async login (ctx: HttpContextContract) {
     const payload = await ctx.request.validate(LoginValidator)
-    const result = await this.authService.login(payload)
+    const ipAddress = ctx.request.ip()
+    const userAgent = ctx.request.header('user-agent')
+    const result = await this.authService.login(payload, { ipAddress, userAgent })
 
     return ctx.response.ok({
       success: true,
@@ -28,7 +32,7 @@ export default class AuthController {
     })
   }
 
-  public async me(ctx: HttpContextContract) {
+  public async me (ctx: HttpContextContract) {
     return ctx.response.ok({
       success: true,
       message: 'User profile retrieved successfully',

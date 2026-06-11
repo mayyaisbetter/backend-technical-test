@@ -37,7 +37,7 @@ const databaseConfig: DatabaseConfig = {
       client: 'pg',
       connection: {
         host: Env.get('PG_HOST'),
-        port: Env.get('PG_PORT'),
+        port: Env.get('PG_PORT', 5433),
         user: Env.get('PG_USER'),
         password: Env.get('PG_PASSWORD', ''),
         database: Env.get('PG_DB_NAME'),
@@ -49,7 +49,7 @@ const databaseConfig: DatabaseConfig = {
       debug: false,
     },
 
-  }
+  },
 }
 
 export default databaseConfig

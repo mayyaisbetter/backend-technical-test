@@ -4,16 +4,16 @@ import { LeaveStatus } from 'App/Enums/LeaveStatus'
 export default class extends BaseSchema {
   protected tableName = 'leave_requests'
 
-  public async up() {
+  public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      
+
       // Foreign key to users table (employee)
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE').notNullable()
-      
+
       // Foreign key to users table (approver admin) - SET NULL on delete to retain history
       table.integer('approved_by').unsigned().references('id').inTable('users').onDelete('SET NULL').nullable()
-      
+
       table.date('start_date').notNullable()
       table.date('end_date').notNullable()
       table.integer('total_days').notNullable()
@@ -35,7 +35,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down() {
+  public async down () {
     this.schema.dropTable(this.tableName)
   }
 }

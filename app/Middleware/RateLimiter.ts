@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Logger from '@ioc:Adonis/Core/Logger'
 
 interface RateLimitData {
   timestamps: number[]
@@ -7,9 +8,9 @@ interface RateLimitData {
 export default class RateLimiter {
   private static clients = new Map<string, RateLimitData>()
   private limit = 10 // Max 10 requests
-  private windowMs = 60 * 1000 // 1 minute window
+  private windowMs = 60 * 1000
 
-  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+  public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
     const ip = ctx.request.ip()
     const now = Date.now()
 
@@ -31,5 +32,9 @@ export default class RateLimiter {
 
     client.timestamps.push(now)
     await next()
+  }
+
+  public async report (error: any, ctx: HttpContextContract) {
+    Logger.warn('RateLimiter error: ' + error.message)
   }
 }

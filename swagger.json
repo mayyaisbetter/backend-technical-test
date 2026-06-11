@@ -1,0 +1,467 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Leave Management API",
+    "version": "1.0.0",
+    "description": "OpenAPI specification for the Leave Management API, including authentication, leave workflows, and admin approvals."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    { "name": "Auth", "description": "Authentication and profile endpoints" },
+    { "name": "Users", "description": "Current user endpoints" },
+    { "name": "Leaves", "description": "Leave request lifecycle endpoints" }
+  ],
+  "security": [
+    { "bearerAuth": [] }
+  ],
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new employee user",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" },
+              "examples": {
+                "employee": {
+                  "value": { "name": "Jane Doe", "email": "jane@example.com", "password": "password123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RegisterResponse" }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login with email and password",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" },
+              "examples": {
+                "credentials": {
+                  "value": { "email": "jane@example.com", "password": "password123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get the authenticated user profile",
+        "responses": {
+          "200": {
+            "description": "Current user profile",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserMeResponse" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/api/v1/leaves": {
+      "get": {
+        "tags": ["Leaves"],
+        "summary": "List leave requests",
+        "parameters": [
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 10 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated leave request list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveListResponse" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Error" }
+        }
+      },
+      "post": {
+        "tags": ["Leaves"],
+        "summary": "Create a new leave request",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/CreateLeaveRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Leave request created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/api/v1/leaves/{id}": {
+      "get": {
+        "tags": ["Leaves"],
+        "summary": "Get a leave request by id",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 1 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leave request details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveResponse" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/api/v1/leaves/{id}/cancel": {
+      "patch": {
+        "tags": ["Leaves"],
+        "summary": "Cancel a pending leave request",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 1 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leave request cancelled",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/api/v1/leaves/{id}/approve": {
+      "patch": {
+        "tags": ["Leaves"],
+        "summary": "Approve a pending leave request",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 1 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leave request approved",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/api/v1/leaves/{id}/reject": {
+      "patch": {
+        "tags": ["Leaves"],
+        "summary": "Reject a pending leave request",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 1 } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RejectLeaveRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Leave request rejected",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeaveResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Standard API error response",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation error response",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ValidationErrorResponse" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Role": {
+        "type": "string",
+        "enum": ["admin", "employee"]
+      },
+      "LeaveStatus": {
+        "type": "string",
+        "enum": ["pending", "approved", "rejected", "cancelled"]
+      },
+      "BaseUser": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Jane Doe" },
+          "email": { "type": "string", "format": "email", "example": "jane@example.com" },
+          "role": { "$ref": "#/components/schemas/Role" },
+          "leave_balance": { "type": "integer", "example": 12 },
+          "oauth_provider": { "type": ["string", "null"], "example": null },
+          "oauth_id": { "type": ["string", "null"], "example": null },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "name", "email", "role", "leave_balance", "created_at", "updated_at"]
+      },
+      "User": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseUser" },
+          {
+            "type": "object",
+            "properties": {
+              "password": { "type": ["string", "null"], "nullable": true, "description": "Hidden in serialized responses" }
+            }
+          }
+        ]
+      },
+      "LeaveRequest": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "user_id": { "type": "integer", "example": 1 },
+          "approved_by": { "type": ["integer", "null"], "example": null },
+          "start_date": { "type": "string", "format": "date", "example": "2026-07-01" },
+          "end_date": { "type": "string", "format": "date", "example": "2026-07-03" },
+          "total_days": { "type": "integer", "example": 3 },
+          "reason": { "type": "string", "example": "Family event" },
+          "attachment_url": { "type": ["string", "null"], "example": "cmq5g06o80001197n9y8cgko4.png" },
+          "status": { "$ref": "#/components/schemas/LeaveStatus" },
+          "rejection_reason": { "type": ["string", "null"], "example": null },
+          "user": { "$ref": "#/components/schemas/BaseUser" },
+          "approver": { "oneOf": [{ "$ref": "#/components/schemas/BaseUser" }, { "type": "null" }] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "user_id", "start_date", "end_date", "total_days", "reason", "status", "created_at", "updated_at"]
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer", "example": 1 },
+          "per_page": { "type": "integer", "example": 10 },
+          "current_page": { "type": "integer", "example": 1 },
+          "last_page": { "type": "integer", "example": 1 },
+          "first_page": { "type": "integer", "example": 1 },
+          "first_page_url": { "type": ["string", "null"], "example": "/api/v1/leaves?page=1" },
+          "last_page_url": { "type": ["string", "null"], "example": "/api/v1/leaves?page=1" },
+          "next_page_url": { "type": ["string", "null"], "example": null },
+          "previous_page_url": { "type": ["string", "null"], "example": null }
+        },
+        "required": ["total", "per_page", "current_page", "last_page", "first_page"]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "message": { "type": "string", "example": "Unauthorized: Invalid or expired token" },
+          "code": { "type": "string", "example": "E_INVALID_CREDENTIALS" }
+        },
+        "required": ["success", "message"]
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "message": { "type": "string", "example": "Validation failed" },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": { "type": "string", "example": "email" },
+                "message": { "type": "string", "example": "Invalid email format" },
+                "rule": { "type": "string", "example": "email" }
+              }
+            }
+          }
+        },
+        "required": ["success", "message"]
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Jane Doe" },
+          "email": { "type": "string", "format": "email", "example": "jane@example.com" },
+          "password": { "type": "string", "minLength": 6, "example": "password123" }
+        },
+        "required": ["name", "email", "password"]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email", "example": "jane@example.com" },
+          "password": { "type": "string", "example": "password123" }
+        },
+        "required": ["email", "password"]
+      },
+      "RejectLeaveRequest": {
+        "type": "object",
+        "properties": {
+          "rejection_reason": { "type": "string", "example": "Too busy in office" }
+        },
+        "required": ["rejection_reason"]
+      },
+      "CreateLeaveRequest": {
+        "type": "object",
+        "properties": {
+          "start_date": { "type": "string", "format": "date", "example": "2026-07-01" },
+          "end_date": { "type": "string", "format": "date", "example": "2026-07-03" },
+          "reason": { "type": "string", "example": "Family event" },
+          "attachment": { "type": "string", "format": "binary" }
+        },
+        "required": ["start_date", "end_date", "reason", "attachment"]
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "User registered successfully" },
+          "data": { "$ref": "#/components/schemas/BaseUser" }
+        },
+        "required": ["success", "message", "data"]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "Login successful" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": { "$ref": "#/components/schemas/BaseUser" },
+              "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+            },
+            "required": ["user", "token"]
+          }
+        },
+        "required": ["success", "message", "data"]
+      },
+      "UserMeResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "User profile retrieved successfully" },
+          "data": { "$ref": "#/components/schemas/BaseUser" }
+        },
+        "required": ["success", "message", "data"]
+      },
+      "LeaveResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "Leave request retrieved successfully" },
+          "data": { "$ref": "#/components/schemas/LeaveRequest" }
+        },
+        "required": ["success", "message", "data"]
+      },
+      "LeaveListResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "Leave requests retrieved successfully" },
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/LeaveRequest" }
+          },
+          "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+        },
+        "required": ["success", "message", "data", "meta"]
+      }
+    }
+  }
+}
+

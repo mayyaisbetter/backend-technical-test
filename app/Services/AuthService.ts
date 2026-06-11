@@ -1,45 +1,67 @@
-import Hash from '@ioc:Adonis/Core/Hash'
+import { inject } from '@adonisjs/fold'
 import { Exception } from '@poppinss/utils'
 import jwt from 'jsonwebtoken'
 import Env from '@ioc:Adonis/Core/Env'
+import Hash from '@ioc:Adonis/Core/Hash'
 import User from 'App/Models/User'
 import { UserRepository } from 'App/Repositories/Contracts/UserRepository'
-import LucidUserRepository from 'App/Repositories/Lucid/UserRepository'
+import AuditLogService from 'App/Services/AuditLogService'
+import { Role } from 'App/Enums/Role'
 
+@inject(['App/Repositories/Contracts/UserRepository', 'App/Services/AuditLogService'])
 export default class AuthService {
-  private userRepository: UserRepository = new LucidUserRepository()
+  constructor (
+    private userRepository: UserRepository,
+    private auditLogService: AuditLogService
+  ) {}
 
-  public async register(data: any): Promise<User> {
-    // Hash password using the scrypt default hasher configured in hash.ts
+  public async register (data: { name: string; email: string; password: string }): Promise<User> {
+    const existing = await this.userRepository.findByEmail(data.email)
+    if (existing) {
+      throw new Exception('Email already exists', 422, 'E_DUPLICATE_EMAIL')
+    }
+
     const hashedPassword = await Hash.make(data.password)
-    
-    return await this.userRepository.create({
+    const user = await this.userRepository.create({
       name: data.name,
       email: data.email,
       password: hashedPassword,
-      role: data.role || 'employee',
+      role: Role.EMPLOYEE,
       leaveBalance: 12,
     })
+
+    return user
   }
 
-  public async login(credentials: any): Promise<{ user: User; token: string }> {
-    const user = await this.userRepository.findByEmail(credentials.email)
-    if (!user || !user.password) {
+  public async login (
+    data: { email: string; password: string },
+    meta?: { ipAddress?: string; userAgent?: string }
+  ): Promise<{ token: string; user: User }> {
+    const user = await this.userRepository.findByEmail(data.email)
+    if (!user) {
       throw new Exception('Invalid email or password', 400, 'E_INVALID_CREDENTIALS')
     }
 
-    const isPasswordValid = await Hash.verify(user.password, credentials.password)
-    if (!isPasswordValid) {
+    if (!user.password) {
+      throw new Exception('Invalid email or password', 400, 'E_INVALID_CREDENTIALS')
+    }
+
+    const valid = await Hash.verify(user.password, data.password)
+    if (!valid) {
       throw new Exception('Invalid email or password', 400, 'E_INVALID_CREDENTIALS')
     }
 
     const secret = Env.get('JWT_SECRET')
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      secret,
-      { expiresIn: '24h' }
-    )
+    const token = jwt.sign({ id: user.id, email: user.email }, secret, { expiresIn: '7d' })
 
-    return { user, token }
+    await this.auditLogService.log({
+      action: 'LOGIN',
+      actorId: user.id,
+      metadata: { email: user.email },
+      ipAddress: meta?.ipAddress,
+      userAgent: meta?.userAgent,
+    })
+
+    return { token, user }
   }
 }

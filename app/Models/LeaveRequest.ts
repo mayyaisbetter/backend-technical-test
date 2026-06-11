@@ -34,16 +34,10 @@ export default class LeaveRequest extends BaseModel {
   @column()
   public rejectionReason: string | null
 
-  // Relationship: The employee who requested the leave
-  @belongsTo(() => User, {
-    foreignKey: 'userId',
-  })
+  @belongsTo(() => User, { foreignKey: 'userId' })
   public user: BelongsTo<typeof User>
 
-  // Relationship: The admin who approved or rejected the leave
-  @belongsTo(() => User, {
-    foreignKey: 'approvedBy',
-  })
+  @belongsTo(() => User, { foreignKey: 'approvedBy' })
   public approver: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })

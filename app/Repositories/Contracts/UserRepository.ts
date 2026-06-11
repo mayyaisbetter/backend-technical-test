@@ -1,8 +1,9 @@
 import User from 'App/Models/User'
+import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 
-export interface UserRepository {
-  findById(id: number, trx?: any, lock?: boolean): Promise<User | null>
-  findByEmail(email: string): Promise<User | null>
-  create(data: any): Promise<User>
-  update(user: User, data: any, trx?: any): Promise<User>
+export abstract class UserRepository {
+  public abstract findById (id: number, trx?: TransactionClientContract, lock?: boolean): Promise<User | null>
+  public abstract findByEmail (email: string): Promise<User | null>
+  public abstract create (data: Partial<User>): Promise<User>
+  public abstract update (user: User, data: Partial<User>, trx?: TransactionClientContract): Promise<User>
 }

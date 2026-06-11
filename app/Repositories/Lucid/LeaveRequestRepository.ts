@@ -1,24 +1,32 @@
 import { LeaveRequestRepository } from 'App/Repositories/Contracts/LeaveRequestRepository'
 import LeaveRequest from 'App/Models/LeaveRequest'
 import { LeaveStatus } from 'App/Enums/LeaveStatus'
+import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
+import { ModelPaginatorContract } from '@ioc:Adonis/Lucid/Orm'
 
 export default class LucidLeaveRequestRepository implements LeaveRequestRepository {
-  public async findById(id: number, trx?: any, lock?: boolean): Promise<LeaveRequest | null> {
+  public async findById (
+    id: number,
+    trx?: TransactionClientContract,
+    lock?: boolean
+  ): Promise<LeaveRequest | null> {
     const query = LeaveRequest.query()
-    if (trx) {
-      query.useTransaction(trx)
-    }
-    if (lock) {
-      query.forUpdate()
-    }
+    if (trx) query.useTransaction(trx)
+    if (lock) query.forUpdate()
     return await query.where('id', id).preload('user').preload('approver').first()
   }
 
-  public async findAllByUserId(userId: number): Promise<LeaveRequest[]> {
-    return await LeaveRequest.query().where('user_id', userId).orderBy('created_at', 'desc')
+  public async findAllByUserId (userId: number): Promise<LeaveRequest[]> {
+    return await LeaveRequest.query()
+      .where('user_id', userId)
+      .orderBy('created_at', 'desc')
   }
 
-  public async findAllByUserIdPaginated(userId: number, page: number, limit: number): Promise<any> {
+  public async findAllByUserIdPaginated (
+    userId: number,
+    page: number,
+    limit: number
+  ): Promise<ModelPaginatorContract<LeaveRequest>> {
     return await LeaveRequest.query()
       .where('user_id', userId)
       .preload('approver')
@@ -26,11 +34,17 @@ export default class LucidLeaveRequestRepository implements LeaveRequestReposito
       .paginate(page, limit)
   }
 
-  public async findAll(): Promise<LeaveRequest[]> {
-    return await LeaveRequest.query().preload('user').preload('approver').orderBy('created_at', 'desc')
+  public async findAll (): Promise<LeaveRequest[]> {
+    return await LeaveRequest.query()
+      .preload('user')
+      .preload('approver')
+      .orderBy('created_at', 'desc')
   }
 
-  public async findAllPaginated(page: number, limit: number): Promise<any> {
+  public async findAllPaginated (
+    page: number,
+    limit: number
+  ): Promise<ModelPaginatorContract<LeaveRequest>> {
     return await LeaveRequest.query()
       .preload('user')
       .preload('approver')
@@ -38,9 +52,11 @@ export default class LucidLeaveRequestRepository implements LeaveRequestReposito
       .paginate(page, limit)
   }
 
-  public async findOverlapping(userId: number, startDate: any, endDate: any): Promise<LeaveRequest | null> {
-    // A request overlaps if start_date <= new_end_date AND end_date >= new_start_date
-    // and status is not rejected or cancelled
+  public async findOverlapping (
+    userId: number,
+    startDate: string,
+    endDate: string
+  ): Promise<LeaveRequest | null> {
     return await LeaveRequest.query()
       .where('user_id', userId)
       .whereNotIn('status', [LeaveStatus.REJECTED, LeaveStatus.CANCELLED])
@@ -49,27 +65,21 @@ export default class LucidLeaveRequestRepository implements LeaveRequestReposito
       .first()
   }
 
-  public async create(data: any): Promise<LeaveRequest> {
+  public async create (data: Partial<LeaveRequest>): Promise<LeaveRequest> {
     return await LeaveRequest.create(data)
   }
 
-  public async updateStatus(
+  public async updateStatus (
     leaveRequest: LeaveRequest,
     status: LeaveStatus,
     approvedBy?: number | null,
     rejectionReason?: string | null,
-    trx?: any
+    trx?: TransactionClientContract
   ): Promise<LeaveRequest> {
-    if (trx) {
-      leaveRequest.useTransaction(trx)
-    }
+    if (trx) leaveRequest.useTransaction(trx)
     leaveRequest.status = status
-    if (approvedBy !== undefined) {
-      leaveRequest.approvedBy = approvedBy
-    }
-    if (rejectionReason !== undefined) {
-      leaveRequest.rejectionReason = rejectionReason
-    }
+    if (approvedBy !== undefined) leaveRequest.approvedBy = approvedBy
+    if (rejectionReason !== undefined) leaveRequest.rejectionReason = rejectionReason
     await leaveRequest.save()
     return leaveRequest
   }

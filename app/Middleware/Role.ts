@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class RoleMiddleware {
-  public async handle(
+  public async handle (
     ctx: HttpContextContract,
     next: () => Promise<void>,
     allowedRoles: string[]

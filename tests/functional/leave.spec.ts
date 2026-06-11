@@ -13,7 +13,7 @@ test.group('Leave Functional Tests', (group) => {
   let adminId: number
 
   group.each.setup(async () => {
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
 
     // Create Employee user
     const empPassword = await Hash.make('password123')
@@ -51,7 +51,7 @@ test.group('Leave Functional Tests', (group) => {
   })
 
   group.teardown(async () => {
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
   test('create leave request successfully', async ({ client }) => {
@@ -71,6 +71,11 @@ test.group('Leave Functional Tests', (group) => {
       success: true,
       message: 'Leave request submitted successfully',
     })
+
+    const auditLog = await Database.from('audit_logs').where('action', 'LEAVE_CREATED').first()
+    if (!auditLog) {
+      throw new Error('Expected LEAVE_CREATED audit log to be created')
+    }
   })
 
   test('fail to create leave request with end date before start date', async ({ client }) => {
@@ -170,6 +175,11 @@ test.group('Leave Functional Tests', (group) => {
         status: 'cancelled',
       },
     })
+
+    const auditLog = await Database.from('audit_logs').where('action', 'LEAVE_CANCELLED').first()
+    if (!auditLog) {
+      throw new Error('Expected LEAVE_CANCELLED audit log to be created')
+    }
   })
 
   test('fail to cancel approved leave request', async ({ client }) => {
@@ -231,10 +241,15 @@ test.group('Leave Functional Tests', (group) => {
       },
     })
 
+    const auditLog = await Database.from('audit_logs').where('action', 'LEAVE_APPROVED').first()
+    if (!auditLog) {
+      throw new Error('Expected LEAVE_APPROVED audit log to be created')
+    }
+
     // Verify employee balance deducted (12 - 3 = 9)
     const profileRes = await client.get('/api/v1/users/me')
       .bearerToken(employeeToken)
-    
+
     profileRes.assertBodyContains({
       data: {
         leave_balance: 9,
@@ -273,5 +288,10 @@ test.group('Leave Functional Tests', (group) => {
         rejection_reason: 'Too busy in office',
       },
     })
+
+    const auditLog = await Database.from('audit_logs').where('action', 'LEAVE_REJECTED').first()
+    if (!auditLog) {
+      throw new Error('Expected LEAVE_REJECTED audit log to be created')
+    }
   })
 })

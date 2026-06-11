@@ -5,18 +5,29 @@ export default class AppProvider {
   }
 
   public register () {
-    // Register your own bindings
+    this.app.container.bind('App/Repositories/Contracts/UserRepository', () => {
+      const { default: UserRepository } = require('App/Repositories/Lucid/UserRepository')
+      return new UserRepository()
+    })
+
+    this.app.container.bind('App/Repositories/Contracts/LeaveRequestRepository', () => {
+      const { default: LeaveRequestRepository } = require('App/Repositories/Lucid/LeaveRequestRepository')
+      return new LeaveRequestRepository()
+    })
+
+    this.app.container.bind('App/Repositories/Contracts/AuditLogRepository', () => {
+      const { default: AuditLogRepository } = require('App/Repositories/Lucid/AuditLogRepository')
+      return new AuditLogRepository()
+    })
   }
 
   public async boot () {
-    // IoC container is ready
   }
 
   public async ready () {
-    // App is ready
   }
 
   public async shutdown () {
-    // Cleanup, since app is going down
   }
 }
+

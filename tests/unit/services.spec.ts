@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import Database from '@ioc:Adonis/Lucid/Database'
+import Application from '@ioc:Adonis/Core/Application'
 import AuthService from 'App/Services/AuthService'
 import LeaveService from 'App/Services/LeaveService'
 import User from 'App/Models/User'
@@ -8,15 +9,19 @@ import { Role } from 'App/Enums/Role'
 import { DateTime } from 'luxon'
 
 test.group('Services Unit Tests', (group) => {
-  const authService = new AuthService()
-  const leaveService = new LeaveService()
+  let authService: AuthService
+  let leaveService: LeaveService
 
+  group.setup(async () => {
+    authService = await Application.container.make(AuthService)
+    leaveService = await Application.container.make(LeaveService)
+  })
   group.each.setup(async () => {
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
   group.teardown(async () => {
-    await Database.rawQuery('TRUNCATE users, leave_requests RESTART IDENTITY CASCADE')
+    await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
   test('AuthService.register creates user and hashes password', async ({ assert }) => {
@@ -31,9 +36,9 @@ test.group('Services Unit Tests', (group) => {
     assert.equal(user.role, Role.EMPLOYEE)
     assert.equal(user.leaveBalance, 12)
     assert.isNotNull(user.password)
-    
+
     // Verify password is hashed correctly and works with verify
-    const isValid = await Hash.verify(user.password!, 'mypassword123')
+    const isValid = user.password ? await Hash.verify(user.password, 'mypassword123') : false
     assert.isTrue(isValid)
   })
 

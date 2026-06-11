@@ -1,10 +1,3 @@
-/**
- * Config source: https://git.io/JfefZ
- *
- * Feel free to let us know via PR, if you find something broken in this config
- * file.
- */
-
 import proxyAddr from 'proxy-addr'
 import Env from '@ioc:Adonis/Core/Env'
 import type { ServerConfig } from '@ioc:Adonis/Core/Server'
@@ -12,95 +5,30 @@ import type { LoggerConfig } from '@ioc:Adonis/Core/Logger'
 import type { ProfilerConfig } from '@ioc:Adonis/Core/Profiler'
 import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
 
-/*
-|--------------------------------------------------------------------------
-| Application secret key
-|--------------------------------------------------------------------------
-|
-| The secret to encrypt and sign different values in your application.
-| Make sure to keep the `APP_KEY` as an environment variable and secure.
-|
-| Note: Changing the application key for an existing app will make all
-| the cookies invalid and also the existing encrypted data will not
-| be decrypted.
-|
-*/
+// Kunci rahasia aplikasi untuk enkripsi data (diambil dari .env)
 export const appKey: string = Env.get('APP_KEY')
 
-/*
-|--------------------------------------------------------------------------
-| Http server configuration
-|--------------------------------------------------------------------------
-|
-| The configuration for the HTTP(s) server. Make sure to go through all
-| the config properties to make keep server secure.
-|
-*/
+// Konfigurasi server HTTP
 export const http: ServerConfig = {
-  /*
-  |--------------------------------------------------------------------------
-  | Allow method spoofing
-  |--------------------------------------------------------------------------
-  |
-  | Method spoofing enables defining custom HTTP methods using a query string
-  | `_method`. This is usually required when you are making traditional
-  | form requests and wants to use HTTP verbs like `PUT`, `DELETE` and
-  | so on.
-  |
-  */
+  // Menonaktifkan manipulasi HTTP method (seperti PUT/DELETE via form)
   allowMethodSpoofing: false,
 
-  /*
-  |--------------------------------------------------------------------------
-  | Subdomain offset
-  |--------------------------------------------------------------------------
-  */
+  // Penentuan offset untuk membaca subdomain
   subdomainOffset: 2,
 
-  /*
-  |--------------------------------------------------------------------------
-  | Request Ids
-  |--------------------------------------------------------------------------
-  |
-  | Setting this value to `true` will generate a unique request id for each
-  | HTTP request and set it as `x-request-id` header.
-  |
-  */
+  // Menonaktifkan pembuatan ID unik otomatis untuk setiap HTTP request
   generateRequestId: false,
 
-  /*
-  |--------------------------------------------------------------------------
-  | Trusting proxy servers
-  |--------------------------------------------------------------------------
-  |
-  | Define the proxy servers that AdonisJs must trust for reading `X-Forwarded`
-  | headers.
-  |
-  */
+  // Mengatur server proxy mana yang dipercaya oleh aplikasi
   trustProxy: proxyAddr.compile('loopback'),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Generating Etag
-  |--------------------------------------------------------------------------
-  |
-  | Whether or not to generate an etag for every response.
-  |
-  */
+  // Menonaktifkan pembuatan Etag untuk cache HTTP
   etag: false,
 
-  /*
-  |--------------------------------------------------------------------------
-  | JSONP Callback
-  |--------------------------------------------------------------------------
-  */
+  // Nama parameter callback untuk format JSONP
   jsonpCallbackName: 'callback',
 
-  /*
-  |--------------------------------------------------------------------------
-  | Cookie settings
-  |--------------------------------------------------------------------------
-  */
+  // Pengaturan default untuk cookie aplikasi
   cookie: {
     domain: '',
     path: '/',
@@ -110,126 +38,37 @@ export const http: ServerConfig = {
     sameSite: false,
   },
 
-  /*
-  |--------------------------------------------------------------------------
-  | Force Content Negotiation
-  |--------------------------------------------------------------------------
-  |
-  | The internals of the framework relies on the content negotiation to
-  | detect the best possible response type for a given HTTP request.
-  |
-  | However, it is a very common these days that API servers always wants to
-  | make response in JSON regardless of the existence of the `Accept` header.
-  |
-  | By setting `forceContentNegotiationTo = 'application/json'`, you negotiate
-  | with the server in advance to always return JSON without relying on the
-  | client to set the header explicitly.
-  |
-  */
+  // Memaksa server untuk selalu membalas request dalam format JSON (cocok untuk API)
   forceContentNegotiationTo: 'application/json',
 }
 
-/*
-|--------------------------------------------------------------------------
-| Logger
-|--------------------------------------------------------------------------
-*/
+// Konfigurasi sistem pencatatan (logger)
 export const logger: LoggerConfig = {
-  /*
-  |--------------------------------------------------------------------------
-  | Application name
-  |--------------------------------------------------------------------------
-  |
-  | The name of the application you want to add to the log. It is recommended
-  | to always have app name in every log line.
-  |
-  | The `APP_NAME` environment variable is automatically set by AdonisJS by
-  | reading the `name` property from the `package.json` file.
-  |
-  */
+  // Nama aplikasi yang akan muncul di setiap baris log
   name: Env.get('APP_NAME', 'leave-management-api'),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Toggle logger
-  |--------------------------------------------------------------------------
-  |
-  | Enable or disable logger application wide
-  |
-  */
+  // Mengaktifkan fitur logger
   enabled: true,
 
-  /*
-  |--------------------------------------------------------------------------
-  | Logging level
-  |--------------------------------------------------------------------------
-  |
-  | The level from which you want the logger to flush logs. It is recommended
-  | to make use of the environment variable, so that you can define log levels
-  | at deployment level and not code level.
-  |
-  */
+  // Tingkat minimum log yang dicatat (contoh: info, debug, warn, error)
   level: Env.get('LOG_LEVEL', 'info'),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Pretty print
-  |--------------------------------------------------------------------------
-  |
-  | It is highly advised NOT to use `prettyPrint` in production, since it
-  | can have huge impact on performance.
-  |
-  */
+  // Mempercantik format log agar mudah dibaca khusus saat mode development
   prettyPrint: Env.get('NODE_ENV') === 'development',
 }
 
-/*
-|--------------------------------------------------------------------------
-| Profiler
-|--------------------------------------------------------------------------
-*/
+// Konfigurasi profiler untuk memantau performa aplikasi (waktu proses, dll)
 export const profiler: ProfilerConfig = {
-  /*
-  |--------------------------------------------------------------------------
-  | Toggle profiler
-  |--------------------------------------------------------------------------
-  |
-  | Enable or disable profiler
-  |
-  */
+  // Mengaktifkan fitur profiler
   enabled: true,
 
-  /*
-  |--------------------------------------------------------------------------
-  | Blacklist actions/row labels
-  |--------------------------------------------------------------------------
-  |
-  | Define an array of actions or row labels that you want to disable from
-  | getting profiled.
-  |
-  */
+  // Daftar aksi/label yang TIDAK ingin dipantau oleh profiler
   blacklist: [],
 
-  /*
-  |--------------------------------------------------------------------------
-  | Whitelist actions/row labels
-  |--------------------------------------------------------------------------
-  |
-  | Define an array of actions or row labels that you want to whitelist for
-  | the profiler. When whitelist is defined, then `blacklist` is ignored.
-  |
-  */
+  // Daftar aksi/label spesifik yang HANYA akan dipantau (blacklist akan diabaikan jika ini diisi)
   whitelist: [],
 }
 
-/*
-|--------------------------------------------------------------------------
-| Validator
-|--------------------------------------------------------------------------
-|
-| Configure the global configuration for the validator. Here's the reference
-| to the default config https://git.io/JT0WE
-|
-*/
+// Konfigurasi global untuk validasi data/input
 export const validator: ValidatorConfig = {
 }

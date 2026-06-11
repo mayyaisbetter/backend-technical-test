@@ -1,13 +1,20 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { inject } from '@adonisjs/fold'
 import LeaveService from 'App/Services/LeaveService'
 import CreateLeaveRequestValidator from 'App/Validators/CreateLeaveRequestValidator'
 
+@inject()
 export default class LeaveController {
-  private leaveService = new LeaveService()
+  constructor (private leaveService: LeaveService) {}
 
-  public async create(ctx: HttpContextContract) {
+  public async create (ctx: HttpContextContract) {
     const payload = await ctx.request.validate(CreateLeaveRequestValidator)
-    const leave = await this.leaveService.createLeaveRequest(ctx.user!.id, payload)
+    const ipAddress = ctx.request.ip()
+    const userAgent = ctx.request.header('user-agent')
+
+    const leave = await this.leaveService.createLeaveRequest(
+      ctx.user!.id, payload, { ipAddress, userAgent }
+    )
 
     return ctx.response.created({
       success: true,
@@ -16,7 +23,7 @@ export default class LeaveController {
     })
   }
 
-  public async index(ctx: HttpContextContract) {
+  public async index (ctx: HttpContextContract) {
     const page = parseInt(ctx.request.input('page', '1'), 10)
     const limit = parseInt(ctx.request.input('limit', '10'), 10)
 
@@ -28,7 +35,6 @@ export default class LeaveController {
     }
 
     const leaves = await this.leaveService.listLeaves(ctx.user!, page, limit)
-    
     const serialized = leaves.toJSON()
 
     return ctx.response.ok({
@@ -39,7 +45,7 @@ export default class LeaveController {
     })
   }
 
-  public async show(ctx: HttpContextContract) {
+  public async show (ctx: HttpContextContract) {
     const id = parseInt(ctx.params.id, 10)
     if (isNaN(id)) {
       return ctx.response.badRequest({
@@ -47,6 +53,7 @@ export default class LeaveController {
         message: 'Invalid ID format',
       })
     }
+
     const leave = await this.leaveService.getLeaveById(ctx.user!, id)
 
     return ctx.response.ok({
@@ -56,7 +63,7 @@ export default class LeaveController {
     })
   }
 
-  public async cancel(ctx: HttpContextContract) {
+  public async cancel (ctx: HttpContextContract) {
     const id = parseInt(ctx.params.id, 10)
     if (isNaN(id)) {
       return ctx.response.badRequest({
@@ -64,7 +71,12 @@ export default class LeaveController {
         message: 'Invalid ID format',
       })
     }
-    const leave = await this.leaveService.cancelLeaveRequest(ctx.user!, id)
+
+    const ipAddress = ctx.request.ip()
+    const userAgent = ctx.request.header('user-agent')
+    const leave = await this.leaveService.cancelLeaveRequest(
+      ctx.user!, id, { ipAddress, userAgent }
+    )
 
     return ctx.response.ok({
       success: true,
