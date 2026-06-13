@@ -75,6 +75,10 @@ ${swaggerPreset}
   Route.post('/auth/register', 'AuthController.register').middleware('rateLimit')
   Route.post('/auth/login', 'AuthController.login').middleware('rateLimit')
 
+  // OAuth routes (Google)
+  Route.get('/auth/google/redirect', 'OAuthController.redirect').middleware('rateLimit')
+  Route.get('/auth/google/callback', 'OAuthController.callback').middleware('rateLimit')
+
   // Authenticated routes – requires valid JWT
   Route.group(() => {
     Route.get('/users/me', 'AuthController.me')

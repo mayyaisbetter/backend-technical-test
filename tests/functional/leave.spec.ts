@@ -1,11 +1,14 @@
 import { test } from '@japa/runner'
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
+import LeaveRequest from 'App/Models/LeaveRequest'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { Role } from 'App/Enums/Role'
 import jwt from 'jsonwebtoken'
 import Env from '@ioc:Adonis/Core/Env'
 import { file } from '@ioc:Adonis/Core/Helpers'
+import { existsSync, unlinkSync } from 'fs'
+import Application from '@ioc:Adonis/Core/Application'
 
 test.group('Leave Functional Tests', (group) => {
   let employeeToken: string
@@ -54,7 +57,7 @@ test.group('Leave Functional Tests', (group) => {
     await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
-  test('create leave request successfully', async ({ client }) => {
+  test('create leave request successfully with attachment stored', async ({ client, assert }) => {
     const dummyFile = await file.generatePng('1mb')
 
     const response = await client.post('/api/v1/leaves')
@@ -72,10 +75,72 @@ test.group('Leave Functional Tests', (group) => {
       message: 'Leave request submitted successfully',
     })
 
+    const body = response.body()
+    assert.isDefined(body.data.attachment_url)
+    assert.isString(body.data.attachment_url)
+    assert.isTrue(body.data.attachment_url.startsWith('leaves/'))
+
+    // Verify attachment_url stored in database
+    const leaveInDb = await LeaveRequest.find(body.data.id)
+    assert.isNotNull(leaveInDb)
+    if (leaveInDb) {
+      assert.isString(leaveInDb.attachmentUrl)
+      if (leaveInDb.attachmentUrl) {
+        assert.isTrue(leaveInDb.attachmentUrl.startsWith('leaves/'))
+      }
+    }
+
+    // Verify file physically exists
+    const absolutePath = Application.tmpPath(`uploads/${body.data.attachment_url}`)
+    assert.isTrue(existsSync(absolutePath))
+
+    // Cleanup uploaded file
+    if (existsSync(absolutePath)) {
+      unlinkSync(absolutePath)
+    }
+
     const auditLog = await Database.from('audit_logs').where('action', 'LEAVE_CREATED').first()
     if (!auditLog) {
       throw new Error('Expected LEAVE_CREATED audit log to be created')
     }
+  })
+
+  test('fail to create leave request with invalid file extension', async ({ client }) => {
+    const dummyFile = await file.generateDocx('1mb')
+
+    const response = await client.post('/api/v1/leaves')
+      .bearerToken(employeeToken)
+      .fields({
+        start_date: '2026-07-01',
+        end_date: '2026-07-03',
+        reason: 'Invalid docx file',
+      })
+      .file('attachment', dummyFile.contents, { filename: dummyFile.name })
+
+    response.assertStatus(422)
+    response.assertBodyContains({
+      success: false,
+      message: 'Validation failed',
+    })
+  })
+
+  test('fail to create leave request with file exceeding 5MB', async ({ client }) => {
+    const dummyFile = await file.generatePng('6mb')
+
+    const response = await client.post('/api/v1/leaves')
+      .bearerToken(employeeToken)
+      .fields({
+        start_date: '2026-07-01',
+        end_date: '2026-07-03',
+        reason: 'File too large',
+      })
+      .file('attachment', dummyFile.contents, { filename: dummyFile.name })
+
+    response.assertStatus(422)
+    response.assertBodyContains({
+      success: false,
+      message: 'Validation failed',
+    })
   })
 
   test('fail to create leave request with end date before start date', async ({ client }) => {

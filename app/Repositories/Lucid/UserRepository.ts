@@ -14,6 +14,13 @@ export default class LucidUserRepository implements UserRepository {
     return await User.findBy('email', email)
   }
 
+  public async findByOauthProvider (provider: string, oauthId: string): Promise<User | null> {
+    return await User.query()
+      .where('oauth_provider', provider)
+      .where('oauth_id', oauthId)
+      .first()
+  }
+
   public async create (data: Partial<User>): Promise<User> {
     return await User.create(data)
   }

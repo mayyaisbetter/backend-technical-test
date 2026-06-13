@@ -12,6 +12,7 @@
     }
   ],
   "tags": [
+    { "name": "Health", "description": "Server health check" },
     { "name": "Auth", "description": "Authentication and profile endpoints" },
     { "name": "Users", "description": "Current user endpoints" },
     { "name": "Leaves", "description": "Leave request lifecycle endpoints" }
@@ -20,6 +21,57 @@
     { "bearerAuth": [] }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Server health check",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/docs": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Swagger UI for interactive API documentation",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Swagger UI HTML page",
+            "content": {
+              "text/html": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/swagger.json": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "OpenAPI 3.0 specification (JSON)",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OpenAPI JSON spec",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/register": {
       "post": {
         "tags": ["Auth"],
@@ -80,6 +132,46 @@
           },
           "400": { "$ref": "#/components/responses/Error" },
           "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/api/v1/auth/google/redirect": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get Google OAuth redirect URL",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Google OAuth redirect URL",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OAuthRedirectResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/google/callback": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Handle Google OAuth callback",
+        "security": [],
+        "parameters": [
+          { "name": "code", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "state", "in": "query", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OAuth login successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OAuthCallbackResponse" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Error" },
+          "400": { "$ref": "#/components/responses/Error" }
         }
       }
     },
@@ -274,6 +366,15 @@
       }
     },
     "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "ok" },
+          "timestamp": { "type": "string", "format": "date-time", "example": "2026-06-14T00:00:00.000Z" },
+          "app": { "type": "string", "example": "leave-management-api" }
+        },
+        "required": ["status", "timestamp", "app"]
+      },
       "Role": {
         "type": "string",
         "enum": ["admin", "employee"]
@@ -401,9 +502,34 @@
           "start_date": { "type": "string", "format": "date", "example": "2026-07-01" },
           "end_date": { "type": "string", "format": "date", "example": "2026-07-03" },
           "reason": { "type": "string", "example": "Family event" },
-          "attachment": { "type": "string", "format": "binary" }
+          "attachment": { "type": "string", "format": "binary", "description": "Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB." }
         },
         "required": ["start_date", "end_date", "reason", "attachment"]
+      },
+      "OAuthRedirectResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "OAuth login successful" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "redirectUrl": { "type": "string", "example": "https://accounts.google.com/o/oauth2/v2/auth?..." }
+            },
+            "required": ["redirectUrl"]
+          }
+        },
+        "required": ["success", "message", "data"]
+      },
+      "OAuthCallbackResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": { "type": "string", "example": "OAuth login successful" },
+          "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+          "user": { "$ref": "#/components/schemas/BaseUser" }
+        },
+        "required": ["success", "message", "token", "user"]
       },
       "RegisterResponse": {
         "type": "object",

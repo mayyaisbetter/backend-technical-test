@@ -26,7 +26,7 @@ export default class LeaveService {
       start_date: DateTime
       end_date: DateTime
       reason: string
-      attachment?: { moveToDisk: (path: string) => Promise<void>; fileName?: string }
+      attachment: { moveToDisk: (path: string) => Promise<void>; fileName?: string }
     },
     meta?: { ipAddress?: string; userAgent?: string }
   ): Promise<LeaveRequest> {
@@ -82,7 +82,7 @@ export default class LeaveService {
     let attachmentUrl: string | null = null
     if (data.attachment) {
       await data.attachment.moveToDisk('leaves')
-      attachmentUrl = data.attachment.fileName ?? null
+      attachmentUrl = `leaves/${data.attachment.fileName}`
     }
 
     const leave = await this.leaveRequestRepository.create({

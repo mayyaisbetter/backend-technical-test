@@ -64,4 +64,73 @@ export default class AuthService {
 
     return { token, user }
   }
+
+  public async handleOAuthLogin (
+    provider: string,
+    oauthId: string,
+    email: string,
+    name: string,
+    meta?: { ipAddress?: string; userAgent?: string }
+  ): Promise<{ token: string; user: User; isNewUser: boolean }> {
+    // First, check if this OAuth account is already linked
+    let user = await this.userRepository.findByOauthProvider(provider, oauthId)
+    let isNewUser = false
+
+    if (user) {
+      // OAuth account already linked, proceed to login
+      await this.auditLogService.log({
+        action: 'OAUTH_LOGIN',
+        actorId: user.id,
+        metadata: { provider, email: user.email },
+        ipAddress: meta?.ipAddress,
+        userAgent: meta?.userAgent,
+      })
+    } else {
+      // Check if user exists by email (link account)
+      user = await this.userRepository.findByEmail(email)
+
+      if (user) {
+        // Link OAuth to existing user
+        user = await this.userRepository.update(user, {
+          oauthProvider: provider,
+          oauthId: oauthId,
+        })
+        await this.auditLogService.log({
+          action: 'OAUTH_ACCOUNT_LINKED',
+          actorId: user.id,
+          metadata: { provider, email: user.email },
+          ipAddress: meta?.ipAddress,
+          userAgent: meta?.userAgent,
+        })
+      } else {
+        // Create new employee user
+        user = await this.userRepository.create({
+          name: name,
+          email: email,
+          password: null,
+          role: Role.EMPLOYEE,
+          leaveBalance: 12,
+          oauthProvider: provider,
+          oauthId: oauthId,
+        })
+        isNewUser = true
+        await this.auditLogService.log({
+          action: 'OAUTH_REGISTER',
+          actorId: user.id,
+          metadata: { provider, email: user.email },
+          ipAddress: meta?.ipAddress,
+          userAgent: meta?.userAgent,
+        })
+      }
+    }
+
+    const secret = Env.get('JWT_SECRET')
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      secret,
+      { expiresIn: '7d' }
+    )
+
+    return { token, user, isNewUser }
+  }
 }

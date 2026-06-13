@@ -25,6 +25,15 @@ export default Env.rules({
 
   /*
   |----------------------------------------------------------
+  | Variables for @adonisjs/ally (Google OAuth)
+  |----------------------------------------------------------
+  */
+  GOOGLE_CLIENT_ID: Env.schema.string.optional(),
+  GOOGLE_CLIENT_SECRET: Env.schema.string.optional(),
+  GOOGLE_CALLBACK_URL: Env.schema.string.optional(),
+
+  /*
+  |----------------------------------------------------------
   | Variables for @adonisjs/lucid
   |----------------------------------------------------------
   */

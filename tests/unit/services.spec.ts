@@ -108,4 +108,82 @@ test.group('Services Unit Tests', (group) => {
     const updatedEmployee = await User.find(employee.id)
     assert.equal(updatedEmployee?.leaveBalance, 8)
   })
+
+  test('AuthService.handleOAuthLogin creates new user for unknown OAuth + unknown email', async ({ assert }) => {
+    const result = await authService.handleOAuthLogin(
+      'google',
+      'google-id-new',
+      'oauth_new@example.com',
+      'OAuth New User',
+    )
+
+    assert.equal(result.user.email, 'oauth_new@example.com')
+    assert.equal(result.user.name, 'OAuth New User')
+    assert.equal(result.user.oauthProvider, 'google')
+    assert.equal(result.user.oauthId, 'google-id-new')
+    assert.isNull(result.user.password)
+    assert.equal(result.user.role, Role.EMPLOYEE)
+    assert.equal(result.user.leaveBalance, 12)
+    assert.isTrue(result.isNewUser)
+    assert.isNotNull(result.token)
+
+    // Audit log for OAUTH_REGISTER
+    const auditLog = await Database.from('audit_logs').where('action', 'OAUTH_REGISTER').first()
+    assert.isNotNull(auditLog)
+    assert.equal(auditLog.actor_id, result.user.id)
+  })
+
+  test('AuthService.handleOAuthLogin returns existing user for matching OAuth credentials', async ({ assert }) => {
+    // First call creates user
+    const first = await authService.handleOAuthLogin(
+      'google',
+      'google-id-returning',
+      'returning@example.com',
+      'Returning User',
+    )
+
+    // Second call with same OAuth creds returns same user
+    const second = await authService.handleOAuthLogin(
+      'google',
+      'google-id-returning',
+      'returning@example.com',
+      'Returning User',
+    )
+
+    assert.equal(second.user.id, first.user.id)
+    assert.isFalse(second.isNewUser)
+    assert.isNotNull(second.token)
+
+    // Audit log for OAUTH_LOGIN (second call)
+    const loginLog = await Database.from('audit_logs').where('action', 'OAUTH_LOGIN').first()
+    assert.isNotNull(loginLog)
+  })
+
+  test('AuthService.handleOAuthLogin links OAuth to existing user by email', async ({ assert }) => {
+    // Register user via conventional auth first
+    const conventionalUser = await authService.register({
+      name: 'Linkable User',
+      email: 'linkable@example.com',
+      password: 'password123',
+    })
+
+    // Now OAuth login with same email but different provider+id
+    const result = await authService.handleOAuthLogin(
+      'google',
+      'google-id-link',
+      'linkable@example.com',
+      'Linkable User',
+    )
+
+    assert.equal(result.user.id, conventionalUser.id)
+    assert.equal(result.user.oauthProvider, 'google')
+    assert.equal(result.user.oauthId, 'google-id-link')
+    assert.isFalse(result.isNewUser)
+    assert.isNotNull(result.token)
+
+    // Audit log for OAUTH_ACCOUNT_LINKED
+    const linkLog = await Database.from('audit_logs').where('action', 'OAUTH_ACCOUNT_LINKED').first()
+    assert.isNotNull(linkLog)
+    assert.equal(linkLog.actor_id, conventionalUser.id)
+  })
 })

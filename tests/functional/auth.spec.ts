@@ -3,7 +3,6 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 test.group('Auth Functional Tests', (group) => {
   group.each.setup(async () => {
-    // Truncate tables and restart IDs to isolate tests
     await Database.rawQuery('TRUNCATE audit_logs, leave_requests, users RESTART IDENTITY CASCADE')
   })
 
@@ -32,14 +31,12 @@ test.group('Auth Functional Tests', (group) => {
   })
 
   test('fail to register with duplicate email', async ({ client }) => {
-    // Register first user
     await client.post('/api/v1/auth/register').json({
       name: 'User One',
       email: 'duplicate@example.com',
       password: 'password123',
     })
 
-    // Try registering with same email
     const response = await client.post('/api/v1/auth/register').json({
       name: 'User Two',
       email: 'duplicate@example.com',
@@ -54,7 +51,6 @@ test.group('Auth Functional Tests', (group) => {
   })
 
   test('login successfully with correct credentials', async ({ client }) => {
-    // Register the user
     await client.post('/api/v1/auth/register').json({
       name: 'Login Test',
       email: 'login@example.com',
@@ -86,7 +82,6 @@ test.group('Auth Functional Tests', (group) => {
   })
 
   test('fail to login with incorrect credentials', async ({ client }) => {
-    // Register the user
     await client.post('/api/v1/auth/register').json({
       name: 'Login Test',
       email: 'login@example.com',
@@ -106,7 +101,6 @@ test.group('Auth Functional Tests', (group) => {
   })
 
   test('fetch profile successfully with valid token', async ({ client }) => {
-    // Register and login
     await client.post('/api/v1/auth/register').json({
       name: 'Profile Test',
       email: 'profile@example.com',
@@ -141,5 +135,17 @@ test.group('Auth Functional Tests', (group) => {
       success: false,
       message: 'Unauthorized: Invalid or expired token',
     })
+  })
+
+  test('GET /api/v1/auth/google/redirect returns redirect URL', async ({ client }) => {
+    const response = await client.get('/api/v1/auth/google/redirect')
+
+    response.assertStatus(200)
+    response.assertBodyContains({ success: true })
+
+    const body = response.body()
+    if (!body.data?.redirectUrl) {
+      throw new Error('redirectUrl is missing')
+    }
   })
 })

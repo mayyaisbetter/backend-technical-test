@@ -10,7 +10,7 @@ export default class CreateLeaveRequestValidator {
     reason: schema.string({ trim: true }),
     attachment: schema.file({
       size: '5mb',
-      extnames: ['jpg', 'jpeg', 'png', 'pdf', 'docx', 'doc'],
+      extnames: ['jpg', 'jpeg', 'png', 'pdf'],
     }),
   })
 
@@ -20,8 +20,9 @@ export default class CreateLeaveRequestValidator {
     'end_date.required': 'End date is required',
     'end_date.date': 'Invalid end date format (must be YYYY-MM-DD)',
     'reason.required': 'Reason is required',
-    'attachment.required': 'Attachment file is required',
+    'attachment.required': 'Attachment is required',
+    'attachment.file': 'Attachment must be a valid file',
     'attachment.size': 'Attachment file must be under 5MB',
-    'attachment.extname': 'Attachment must be a valid image or document (jpg, png, pdf, doc, docx)',
+    'attachment.extname': 'Attachment must be a PDF, PNG, JPG, or JPEG file',
   }
 }

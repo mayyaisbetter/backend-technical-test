@@ -1,0 +1,2748 @@
+{
+  "item": [
+    {
+      "id": "afe2125e-1b7f-454a-95ac-7055c50feacc",
+      "name": "api/v1",
+      "item": [
+        {
+          "id": "66f85fb5-d997-49db-b3b2-70114b104ce0",
+          "name": "auth",
+          "item": [
+            {
+              "id": "6e296ff2-d6b0-4e63-aac4-32e6c0be17cd",
+              "name": "Register a new employee user",
+              "request": {
+                "name": "Register a new employee user",
+                "description": {},
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [
+                {
+                  "id": "754987b9-0610-460b-929c-0767bad9a075",
+                  "name": "User registered successfully",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "register"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane@example.com\",\n    \"role\": \"employee\",\n    \"leave_balance\": 12,\n    \"created_at\": \"1979-03-06T14:05:25.619Z\",\n    \"updated_at\": \"2013-02-23T15:14:27.056Z\",\n    \"oauth_provider\": null,\n    \"oauth_id\": null\n  }\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "71ac31f4-0ad9-4df3-aed9-b53fb0b85e22",
+                  "name": "Validation error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "register"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": [\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    },\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    }\n  ]\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "e746db80-b26c-40ce-8e3d-966a4c578114",
+              "name": "Login with email and password",
+              "request": {
+                "name": "Login with email and password",
+                "description": {},
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [
+                {
+                  "id": "292961f3-0599-414d-93e4-37995198e755",
+                  "name": "Login successful",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"1956-02-21T03:41:38.908Z\",\n      \"updated_at\": \"1995-06-18T01:31:36.832Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  }\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "37f0a00f-db95-4ee8-ab76-ca59b92efb1f",
+                  "name": "Standard API error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "c2ee89b7-a314-49d6-b92a-9e5f89f4b30d",
+                  "name": "Validation error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": [\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    },\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    }\n  ]\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "de312037-a8d1-499a-bf1b-4fcf85331dd3",
+              "name": "google",
+              "item": [
+                {
+                  "id": "9a5a30ff-2306-4e6a-a710-824a2f9dd9ea",
+                  "name": "Get Google OAuth redirect URL",
+                  "request": {
+                    "name": "Get Google OAuth redirect URL",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "google",
+                        "redirect"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "7b7e8a2c-2373-4bc7-8f47-73560af9dc7c",
+                      "name": "Google OAuth redirect URL",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "google",
+                            "redirect"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"OAuth login successful\",\n  \"data\": {\n    \"redirectUrl\": \"https://accounts.google.com/o/oauth2/v2/auth?...\"\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "5814118e-b9b9-4de9-a4b7-f4a110ea315d",
+                  "name": "Handle Google OAuth callback",
+                  "request": {
+                    "name": "Handle Google OAuth callback",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "google",
+                        "callback"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "disabled": false,
+                          "key": "code",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        },
+                        {
+                          "disabled": false,
+                          "key": "state",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "8d6d4051-0b80-4c17-b761-cace962aced5",
+                      "name": "OAuth login successful",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "google",
+                            "callback"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "state",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"OAuth login successful\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane@example.com\",\n    \"role\": \"employee\",\n    \"leave_balance\": 12,\n    \"created_at\": \"1949-11-13T12:13:52.003Z\",\n    \"updated_at\": \"1966-08-09T10:20:50.213Z\",\n    \"oauth_provider\": null,\n    \"oauth_id\": null\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "c7c76a99-143b-4f8b-8769-d4b2c715eaae",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "google",
+                            "callback"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "state",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "8af714b8-3110-40b3-9ac3-586952b4f90c",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "google",
+                            "callback"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "state",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "fdfc4f1c-9b14-48a8-8bf5-d64bc7d99ddc",
+          "name": "Get the authenticated user profile",
+          "request": {
+            "name": "Get the authenticated user profile",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "580ad39c-64f7-4c98-a8d7-2a53b2908645",
+              "name": "Current user profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User profile retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane@example.com\",\n    \"role\": \"admin\",\n    \"leave_balance\": 12,\n    \"created_at\": \"1996-07-06T18:34:43.251Z\",\n    \"updated_at\": \"1980-10-24T01:21:38.656Z\",\n    \"oauth_provider\": null,\n    \"oauth_id\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d6706b8-7a2a-4aa0-b31e-2a32d292b3ed",
+              "name": "Standard API error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15bc3e1f-2167-42a8-9ce9-0e5fd105fa18",
+          "name": "leaves",
+          "item": [
+            {
+              "id": "bdc2bd63-eb9e-4e3b-b18a-ee12132993ca",
+              "name": "List leave requests",
+              "request": {
+                "name": "List leave requests",
+                "description": {},
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "leaves"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "disabled": false,
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "3fda5bf1-4f1d-4f45-9c12-953ff39f4861",
+                  "name": "Paginated leave request list",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "10"
+                        }
+                      ],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Leave requests retrieved successfully\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"user_id\": 1,\n      \"start_date\": \"2026-07-01\",\n      \"end_date\": \"2026-07-03\",\n      \"total_days\": 3,\n      \"reason\": \"Family event\",\n      \"status\": \"approved\",\n      \"created_at\": \"1982-11-21T15:24:40.483Z\",\n      \"updated_at\": \"1968-08-14T14:14:48.790Z\",\n      \"approved_by\": null,\n      \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n      \"rejection_reason\": null,\n      \"user\": {\n        \"id\": 1,\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@example.com\",\n        \"role\": \"admin\",\n        \"leave_balance\": 12,\n        \"created_at\": \"2013-05-19T15:06:22.941Z\",\n        \"updated_at\": \"1953-06-30T14:37:57.485Z\",\n        \"oauth_provider\": null,\n        \"oauth_id\": null\n      },\n      \"approver\": {\n        \"id\": 1,\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@example.com\",\n        \"role\": \"admin\",\n        \"leave_balance\": 12,\n        \"created_at\": \"2018-10-02T15:38:59.780Z\",\n        \"updated_at\": \"1961-07-27T09:21:06.585Z\",\n        \"oauth_provider\": null,\n        \"oauth_id\": null\n      }\n    },\n    {\n      \"id\": 1,\n      \"user_id\": 1,\n      \"start_date\": \"2026-07-01\",\n      \"end_date\": \"2026-07-03\",\n      \"total_days\": 3,\n      \"reason\": \"Family event\",\n      \"status\": \"cancelled\",\n      \"created_at\": \"2010-07-18T04:14:43.802Z\",\n      \"updated_at\": \"2010-05-05T08:26:33.141Z\",\n      \"approved_by\": null,\n      \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n      \"rejection_reason\": null,\n      \"user\": {\n        \"id\": 1,\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@example.com\",\n        \"role\": \"admin\",\n        \"leave_balance\": 12,\n        \"created_at\": \"2019-01-12T15:36:25.568Z\",\n        \"updated_at\": \"1989-11-30T20:38:17.924Z\",\n        \"oauth_provider\": null,\n        \"oauth_id\": null\n      },\n      \"approver\": {\n        \"id\": 1,\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@example.com\",\n        \"role\": \"employee\",\n        \"leave_balance\": 12,\n        \"created_at\": \"1980-10-30T21:27:21.233Z\",\n        \"updated_at\": \"1972-09-16T04:09:56.203Z\",\n        \"oauth_provider\": null,\n        \"oauth_id\": null\n      }\n    }\n  ],\n  \"meta\": {\n    \"total\": 1,\n    \"per_page\": 10,\n    \"current_page\": 1,\n    \"last_page\": 1,\n    \"first_page\": 1,\n    \"first_page_url\": \"/api/v1/leaves?page=1\",\n    \"last_page_url\": \"/api/v1/leaves?page=1\",\n    \"next_page_url\": null,\n    \"previous_page_url\": null\n  }\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "d77e08ac-2945-41c9-81f3-b914c7382470",
+                  "name": "Standard API error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "10"
+                        }
+                      ],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "370ce6d7-7549-4a44-980d-d0480ee1d78d",
+              "name": "Create a new leave request",
+              "request": {
+                "name": "Create a new leave request",
+                "description": {},
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "leaves"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>",
+                      "type": "text",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>",
+                      "type": "text",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>",
+                      "type": "text",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "attachment",
+                      "type": "file",
+                      "description": "(Required) Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB."
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "f3aaaaac-3ad8-4a19-a71d-e93172b3c49a",
+                  "name": "Leave request created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "start_date",
+                          "value": "2026-07-01",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "end_date",
+                          "value": "2026-07-03",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "reason",
+                          "value": "Family event",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB.",
+                            "type": "text/plain"
+                          },
+                          "key": "attachment",
+                          "value": "<binary>",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Leave request retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"start_date\": \"2026-07-01\",\n    \"end_date\": \"2026-07-03\",\n    \"total_days\": 3,\n    \"reason\": \"Family event\",\n    \"status\": \"approved\",\n    \"created_at\": \"1959-11-02T11:26:43.833Z\",\n    \"updated_at\": \"1995-07-26T08:13:29.758Z\",\n    \"approved_by\": null,\n    \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n    \"rejection_reason\": null,\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"admin\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-09-09T05:23:31.042Z\",\n      \"updated_at\": \"2006-11-06T17:56:51.817Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"approver\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-02-06T15:02:47.412Z\",\n      \"updated_at\": \"1961-02-15T10:24:02.232Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    }\n  }\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "19d0bf84-e912-4524-abef-851386dc6ca3",
+                  "name": "Standard API error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "start_date",
+                          "value": "2026-07-01",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "end_date",
+                          "value": "2026-07-03",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "reason",
+                          "value": "Family event",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB.",
+                            "type": "text/plain"
+                          },
+                          "key": "attachment",
+                          "value": "<binary>",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "6eaff41c-652d-4274-a566-2536aa4f6b91",
+                  "name": "Standard API error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "start_date",
+                          "value": "2026-07-01",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "end_date",
+                          "value": "2026-07-03",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "reason",
+                          "value": "Family event",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB.",
+                            "type": "text/plain"
+                          },
+                          "key": "attachment",
+                          "value": "<binary>",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "53d477ea-701d-4710-a577-a8cea097a084",
+                  "name": "Validation error response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "start_date",
+                          "value": "2026-07-01",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "end_date",
+                          "value": "2026-07-03",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "key": "reason",
+                          "value": "Family event",
+                          "type": "text"
+                        },
+                        {
+                          "description": {
+                            "content": "(Required) Required. Allowed: PDF, PNG, JPG, JPEG. Max 5MB.",
+                            "type": "text/plain"
+                          },
+                          "key": "attachment",
+                          "value": "<binary>",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": [\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    },\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    }\n  ]\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "327c52db-7ec1-4ceb-bda4-b1d9d329f4b9",
+              "name": "{id}",
+              "item": [
+                {
+                  "id": "37f7d682-6b0f-453f-915b-aeb90648661a",
+                  "name": "Get a leave request by id",
+                  "request": {
+                    "name": "Get a leave request by id",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<integer>",
+                          "key": "id",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "843adfc5-5027-4996-b896-dad0c87d29c2",
+                      "name": "Leave request details",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"Leave request retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"start_date\": \"2026-07-01\",\n    \"end_date\": \"2026-07-03\",\n    \"total_days\": 3,\n    \"reason\": \"Family event\",\n    \"status\": \"approved\",\n    \"created_at\": \"1959-11-02T11:26:43.833Z\",\n    \"updated_at\": \"1995-07-26T08:13:29.758Z\",\n    \"approved_by\": null,\n    \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n    \"rejection_reason\": null,\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"admin\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-09-09T05:23:31.042Z\",\n      \"updated_at\": \"2006-11-06T17:56:51.817Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"approver\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-02-06T15:02:47.412Z\",\n      \"updated_at\": \"1961-02-15T10:24:02.232Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    }\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "5501bcb4-8999-4492-9783-cd942c55f979",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "034f19c9-ac5d-43d1-b918-03f9609b98f1",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "e7294636-662e-4dbf-96ed-cc40b18583b3",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "86999db9-c984-4ca8-86a6-d874c5269bb7",
+                  "name": "Cancel a pending leave request",
+                  "request": {
+                    "name": "Cancel a pending leave request",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves",
+                        ":id",
+                        "cancel"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<integer>",
+                          "key": "id",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "83f7f99c-17a4-40d8-b5cd-6b22a1f92d05",
+                      "name": "Leave request cancelled",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "cancel"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"Leave request retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"start_date\": \"2026-07-01\",\n    \"end_date\": \"2026-07-03\",\n    \"total_days\": 3,\n    \"reason\": \"Family event\",\n    \"status\": \"approved\",\n    \"created_at\": \"1959-11-02T11:26:43.833Z\",\n    \"updated_at\": \"1995-07-26T08:13:29.758Z\",\n    \"approved_by\": null,\n    \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n    \"rejection_reason\": null,\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"admin\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-09-09T05:23:31.042Z\",\n      \"updated_at\": \"2006-11-06T17:56:51.817Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"approver\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-02-06T15:02:47.412Z\",\n      \"updated_at\": \"1961-02-15T10:24:02.232Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    }\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "c68d0c75-531e-47ef-a513-54bd7e4128eb",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "cancel"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "473fcb94-2e09-486c-b939-8ad881e666d1",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "cancel"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "2ac464dc-e457-4a2b-8c46-5e6e0fe9c917",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "cancel"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "92caa749-94e6-4a68-bb6a-edd603ea97a2",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "cancel"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "42207bd9-9d03-47ca-b643-fd0eedb8797b",
+                  "name": "Approve a pending leave request",
+                  "request": {
+                    "name": "Approve a pending leave request",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves",
+                        ":id",
+                        "approve"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<integer>",
+                          "key": "id",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "3d92c29a-852c-47c4-b9b0-ac4dacd61330",
+                      "name": "Leave request approved",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "approve"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"Leave request retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"start_date\": \"2026-07-01\",\n    \"end_date\": \"2026-07-03\",\n    \"total_days\": 3,\n    \"reason\": \"Family event\",\n    \"status\": \"approved\",\n    \"created_at\": \"1959-11-02T11:26:43.833Z\",\n    \"updated_at\": \"1995-07-26T08:13:29.758Z\",\n    \"approved_by\": null,\n    \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n    \"rejection_reason\": null,\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"admin\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-09-09T05:23:31.042Z\",\n      \"updated_at\": \"2006-11-06T17:56:51.817Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"approver\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-02-06T15:02:47.412Z\",\n      \"updated_at\": \"1961-02-15T10:24:02.232Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    }\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "84ed8d84-364c-4611-92cd-7b7d2c1ce380",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "approve"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "0a6fe9f6-b19f-4ae8-842d-e5692f153d18",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "approve"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "3454c557-cfd5-44c6-a767-01b04a1f5ac6",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "approve"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "e7bc1f82-6892-45de-bd68-52944dfdff0b",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "approve"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {}
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "46dad32f-fbf2-4da9-a022-488bdc6c7023",
+                  "name": "Reject a pending leave request",
+                  "request": {
+                    "name": "Reject a pending leave request",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "leaves",
+                        ":id",
+                        "reject"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<integer>",
+                          "key": "id",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "auth": null,
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"rejection_reason\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "57bf70ff-f362-422d-b0b9-e737c7f98383",
+                      "name": "Leave request rejected",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"Leave request retrieved successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"start_date\": \"2026-07-01\",\n    \"end_date\": \"2026-07-03\",\n    \"total_days\": 3,\n    \"reason\": \"Family event\",\n    \"status\": \"approved\",\n    \"created_at\": \"1959-11-02T11:26:43.833Z\",\n    \"updated_at\": \"1995-07-26T08:13:29.758Z\",\n    \"approved_by\": null,\n    \"attachment_url\": \"cmq5g06o80001197n9y8cgko4.png\",\n    \"rejection_reason\": null,\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"admin\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-09-09T05:23:31.042Z\",\n      \"updated_at\": \"2006-11-06T17:56:51.817Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    },\n    \"approver\": {\n      \"id\": 1,\n      \"name\": \"Jane Doe\",\n      \"email\": \"jane@example.com\",\n      \"role\": \"employee\",\n      \"leave_balance\": 12,\n      \"created_at\": \"2007-02-06T15:02:47.412Z\",\n      \"updated_at\": \"1961-02-15T10:24:02.232Z\",\n      \"oauth_provider\": null,\n      \"oauth_id\": null\n    }\n  }\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "ed18f1f9-2a4d-4572-94b2-2e4cd554cd24",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "c8c43f02-0ca5-4667-aa02-07b7c63f665a",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "49b86e0b-3728-4583-9cee-b05a0f5cf187",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "63858e10-8e19-4392-92a5-b740eb8a815d",
+                      "name": "Standard API error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: Invalid or expired token\",\n  \"code\": \"E_INVALID_CREDENTIALS\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "bd9f4fd5-01ea-4328-8e36-6444fd63d9f7",
+                      "name": "Validation error response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "leaves",
+                            ":id",
+                            "reject"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "id",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "PATCH",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"rejection_reason\": \"Too busy in office\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"success\": false,\n  \"message\": \"Validation failed\",\n  \"errors\": [\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    },\n    {\n      \"field\": \"email\",\n      \"message\": \"Invalid email format\",\n      \"rule\": \"email\"\n    }\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:3333",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "483b5f62-6027-4539-86b0-2099cbe1a55a",
+    "name": "Leave Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI specification for the Leave Management API, including authentication, leave workflows, and admin approvals.",
+      "type": "text/plain"
+    }
+  }
+}
