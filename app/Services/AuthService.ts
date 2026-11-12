@@ -72,12 +72,10 @@ export default class AuthService {
     name: string,
     meta?: { ipAddress?: string; userAgent?: string }
   ): Promise<{ token: string; user: User; isNewUser: boolean }> {
-    // First, check if this OAuth account is already linked
     let user = await this.userRepository.findByOauthProvider(provider, oauthId)
     let isNewUser = false
 
     if (user) {
-      // OAuth account already linked, proceed to login
       await this.auditLogService.log({
         action: 'OAUTH_LOGIN',
         actorId: user.id,
@@ -86,11 +84,9 @@ export default class AuthService {
         userAgent: meta?.userAgent,
       })
     } else {
-      // Check if user exists by email (link account)
       user = await this.userRepository.findByEmail(email)
 
       if (user) {
-        // Link OAuth to existing user
         user = await this.userRepository.update(user, {
           oauthProvider: provider,
           oauthId: oauthId,
@@ -103,7 +99,6 @@ export default class AuthService {
           userAgent: meta?.userAgent,
         })
       } else {
-        // Create new employee user
         user = await this.userRepository.create({
           name: name,
           email: email,

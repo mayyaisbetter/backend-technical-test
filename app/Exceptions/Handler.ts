@@ -6,18 +6,15 @@ export default class ExceptionHandler {
     const status = error?.status || 500
 
     let message = 'Internal Server Error'
+    let errors: any = null
 
-    // ✅ handle validation error Adonis
     if (error?.code === 'E_VALIDATION_FAILURE' || status === 422) {
       message = 'Validation failed'
-    }
-
-    // error selain 500 & 422
-    else if (status !== 500) {
+      errors = error?.messages?.errors || error?.messages || null
+    } else if (status !== 500) {
       message = (error?.message || 'Unexpected error').replace(/^E_[A-Z_]+:\s*/, '').trim()
     }
 
-    // log hanya untuk server error
     if (status === 500) {
       Logger.error(error?.message || error)
     }
@@ -25,6 +22,7 @@ export default class ExceptionHandler {
     return ctx.response.status(status).send({
       success: false,
       message,
+      ...(errors ? { errors } : {}),
     })
   }
 

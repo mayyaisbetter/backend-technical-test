@@ -16,7 +16,7 @@ export default class OAuthController {
       success: true,
       message: 'OAuth login successful',
       data: {
-        redirectUrl: await google.getRedirectUrl(),
+        redirectUrl: await google.redirectUrl(),
       },
     })
   }
@@ -40,7 +40,7 @@ export default class OAuthController {
       return ctx.response.unauthorized({
         success: false,
         message: 'OAuth authentication failed',
-        error: error?.message || 'Unknown error',
+        error: error || 'Unknown error',
       })
     }
 

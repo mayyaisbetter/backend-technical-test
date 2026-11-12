@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 export default class AppProvider {

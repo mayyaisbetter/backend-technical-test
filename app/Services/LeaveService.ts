@@ -6,6 +6,8 @@ import { LeaveStatus } from 'App/Enums/LeaveStatus'
 import { Role } from 'App/Enums/Role'
 import { LeaveRequestRepository } from 'App/Repositories/Contracts/LeaveRequestRepository'
 import { UserRepository } from 'App/Repositories/Contracts/UserRepository'
+import LeaveRequest from 'App/Models/LeaveRequest'
+import User from 'App/Models/User'
 import AuditLogService from 'App/Services/AuditLogService'
 
 @inject([
@@ -26,7 +28,7 @@ export default class LeaveService {
       start_date: DateTime
       end_date: DateTime
       reason: string
-      attachment: { moveToDisk: (path: string) => Promise<void>; fileName?: string }
+      attachment?: { moveToDisk: (path: string) => Promise<void>; fileName?: string }
     },
     meta?: { ipAddress?: string; userAgent?: string }
   ): Promise<LeaveRequest> {
@@ -128,7 +130,6 @@ export default class LeaveService {
       throw new Exception('Leave request not found', 404, 'E_LEAVE_NOT_FOUND')
     }
 
-    // Employee can only view their own requests
     if (user.role !== Role.ADMIN && leave.userId !== user.id) {
       throw new Exception('Access denied: You cannot view this leave request', 403, 'E_ACCESS_DENIED')
     }

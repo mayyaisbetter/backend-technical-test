@@ -11,8 +11,12 @@ export default class LucidLeaveRequestRepository implements LeaveRequestReposito
     lock?: boolean
   ): Promise<LeaveRequest | null> {
     const query = LeaveRequest.query()
-    if (trx) query.useTransaction(trx)
-    if (lock) query.forUpdate()
+    if (trx) {
+      query.useTransaction(trx)
+    }
+    if (lock) {
+      query.forUpdate()
+    }
     return await query.where('id', id).preload('user').preload('approver').first()
   }
 
@@ -76,10 +80,16 @@ export default class LucidLeaveRequestRepository implements LeaveRequestReposito
     rejectionReason?: string | null,
     trx?: TransactionClientContract
   ): Promise<LeaveRequest> {
-    if (trx) leaveRequest.useTransaction(trx)
+    if (trx) {
+      leaveRequest.useTransaction(trx)
+    }
     leaveRequest.status = status
-    if (approvedBy !== undefined) leaveRequest.approvedBy = approvedBy
-    if (rejectionReason !== undefined) leaveRequest.rejectionReason = rejectionReason
+    if (approvedBy !== undefined) {
+      leaveRequest.approvedBy = approvedBy
+    }
+    if (rejectionReason !== undefined) {
+      leaveRequest.rejectionReason = rejectionReason
+    }
     await leaveRequest.save()
     return leaveRequest
   }

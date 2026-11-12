@@ -7,10 +7,10 @@ interface RateLimitData {
 
 export default class RateLimiter {
   private static clients = new Map<string, RateLimitData>()
-  private limit = 10 // Max 10 requests
+  private limit = 10
   private windowMs = 60 * 1000
 
-  public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
+  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
     const ip = ctx.request.ip()
     const now = Date.now()
 
@@ -20,7 +20,6 @@ export default class RateLimiter {
       RateLimiter.clients.set(ip, client)
     }
 
-    // Filter out timestamps older than the window
     client.timestamps = client.timestamps.filter((timestamp) => now - timestamp < this.windowMs)
 
     if (client.timestamps.length >= this.limit) {
@@ -34,7 +33,7 @@ export default class RateLimiter {
     await next()
   }
 
-  public async report (error: any, ctx: HttpContextContract) {
+  public async report(error: any, _ctx: HttpContextContract) {
     Logger.warn('RateLimiter error: ' + error.message)
   }
 }

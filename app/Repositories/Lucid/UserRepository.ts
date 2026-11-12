@@ -5,8 +5,12 @@ import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 export default class LucidUserRepository implements UserRepository {
   public async findById (id: number, trx?: TransactionClientContract, lock?: boolean): Promise<User | null> {
     const query = User.query()
-    if (trx) query.useTransaction(trx)
-    if (lock) query.forUpdate()
+    if (trx) {
+      query.useTransaction(trx)
+    }
+    if (lock) {
+      query.forUpdate()
+    }
     return await query.where('id', id).first()
   }
 
@@ -26,7 +30,9 @@ export default class LucidUserRepository implements UserRepository {
   }
 
   public async update (user: User, data: Partial<User>, trx?: TransactionClientContract): Promise<User> {
-    if (trx) user.useTransaction(trx)
+    if (trx) {
+      user.useTransaction(trx)
+    }
     user.merge(data)
     await user.save()
     return user
